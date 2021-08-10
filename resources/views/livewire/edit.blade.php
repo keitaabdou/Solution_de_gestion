@@ -7,7 +7,7 @@
           </div>
           <!-- /.card-header -->
           <!-- form start -->
-          <form role="form" wire:submit.prevent="updateUser()">
+          <form role="form" wire:submit.prevent="updateUser()" method="POST">
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
@@ -96,26 +96,43 @@
             <!-- /.card-body -->
 
             <div class="card-footer">
-              <button type="submit" class="btn btn-primary" wire:click="goToEditUser()">Appliquer les modifications</button>
+              <button type="submit" class="btn btn-primary">Appliquer les modifications</button>
               <button type="button" wire:click="goToListUser()" class="btn btn-danger">Returner à la liste des utilisateurs</button>
             </div>
           </form>
         </div>
+    </div>
         <!-- /.card -->
-      </div>
+    <div class="col-md-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-key fa-2x" style="font-size: 20px"> Rénitialisation de mot de passe</i></h3>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li>
+                                <a href="" class="btn btn-link" wire:click.prevent="confirmPwdReset()">Rénitialisation de mot de passe</a>
+                                <span>(par défault: "password")</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-4">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-fingerprint fa-2x" style="font-size: 20px"> Roles & Permissions</i></h3>
+                    </div>
+                    <div class="card-body">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    <div>
 </div>
 
-<script>
 
-    window.addEventListener("showSuccessMessage", event=>{
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            toast: true,
-            title: event.detail.message || "Opération effectuée avec succès!",
-            showConfirmButton: false,
-            timer: 3000
-            }
-        )
-    })
-</script>
