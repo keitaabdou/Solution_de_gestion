@@ -126,7 +126,42 @@
                         <h3 class="card-title"><i class="fas fa-fingerprint fa-2x" style="font-size: 20px"> Roles & Permissions</i></h3>
                     </div>
                     <div class="card-body">
-
+                        <div id="accordion">
+                            @foreach ($rolePermissions["roles"] as $role)
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between">
+                                    <h4 class="card-title flex-grow-1">
+                                        <a data-parent="#accordion" href="" aria-expanded="true">
+                                            {{$role["role_nom"]}}
+                                        </a>
+                                    </h4>
+                                    <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                        <input type="checkbox" class="custom-control-input" id="customSwitch">
+                                        <label class="custom-control-label" for="customSwitch">Activé</label>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Permission</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Ajouter un client</td>
+                                    <td>
+                                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                            <input type="checkbox" class="custom-control-input" id="customSwitchPermission">
+                                            <label class="custom-control-label" for="customSwitchPermission">Activé</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -17,6 +19,8 @@ class Utilisateur extends Component
 
     public $newUser = [];
     public $editUser = [];
+
+    public $rolePermissions = [];
 
     public function render()
     {
@@ -60,6 +64,38 @@ class Utilisateur extends Component
     public function goToEditUser($id){
         $this->editUser = User::find($id)->toArray();
         $this->currentPage = PAGEEDITFORM;
+
+        $this->populateRolePermissions();
+    }
+
+    public function populateRolePermissions(){
+        $this->rolePermissions["roles"] = [];
+        $this->rolePermissions["permissions"] = [];
+
+        $mapForCB = function($value){
+            return $value["id"];
+        };
+        $rolesIds = array_map($mapForCB, User::find($this->editUser["id"])->roles->toArray());
+        $permissionIds = array_map($mapForCB, User::find($this->editUser["id"])->permissions->toArray());
+
+        foreach(Role::all() as $role){
+            if(in_array($role->id, $rolesIds)){
+                array_push($this->rolePermissions["roles"], ["role_id"=>$role->id, "role_nom"=>$role->nom, "active"=>true]);
+            }else{
+                array_push($this->rolePermissions["roles"], ["role_id"=>$role->id, "role_nom"=>$role->nom, "active"=>false]);
+
+            }
+        }
+        foreach(Permission::all() as $permission){
+            if(in_array($permission->id, $permissionIds)){
+                array_push($this->rolePermissions["permissions"], ["permission_id"=>$permission->id, "permission_nom"=>$permission->nom, "active"=>true]);
+            }else{
+                array_push($this->rolePermissions["permissions"], ["permission_id"=>$permission->id, "permission_nom"=>$permission->nom, "active"=>false]);
+
+            }
+        }
+        //dump($this->rolePermissions);
+
     }
 
     public function goToListUser(){
