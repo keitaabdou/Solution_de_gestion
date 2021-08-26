@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -24,6 +26,7 @@ class Utilisateur extends Component
 
     public function render()
     {
+        Carbon::setLocale("fr");
 
         return view('livewire.utilisateurs', [
             "users" => User::latest()->paginate(10)
@@ -94,8 +97,25 @@ class Utilisateur extends Component
 
             }
         }
-        //dump($this->rolePermissions);
 
+
+    }
+    public function updateRoleAndPermissions(){
+        DB::table("user_role")->where("user_id", $this->editUser["id"])->delete();
+        DB::table("user_permission")->where("user_id", $this->editUser["id"])->delete();
+
+        foreach($this->rolePermissions["roles"] as $role){
+           if($role["active"]){
+            User::find($this->editUser["id"])->roles()->attach($role["role_id"]);
+           }
+        }
+
+        foreach($this->rolePermissions["permissions"] as $permission){
+            if($permission["active"]){
+                User::find($this->editUser["id"])->permissions()->attach($permission["permission_id"]);
+            }
+        }
+        $this->dispatchBrowserEvent("showSuccessMessage", ["message" => "Roles et permissions mise  a jour  avec succès!"]);
     }
 
     public function goToListUser(){
